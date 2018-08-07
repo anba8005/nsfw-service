@@ -12,6 +12,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 64 * 1024 * 1024
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 def allowed_file(filename):
@@ -45,8 +46,8 @@ def upload_file():
            nsfw = analyze_file(filename)
            end = datetime.now()
            os.remove(filename)
-           if nsfw >= 0.8:
-               flash('NUDITY detected (NSFW >= 0.8)')
+           if nsfw >= 0.6:
+               flash('NUDITY detected (NSFW >= 0.6)')
            flash("NSFW Probability: {}".format(nsfw))
            flash("Processing time {} seconds".format((end-start).total_seconds()))
            return redirect(request.url)
